@@ -43,6 +43,12 @@ export default function Register() {
     { name: "Radyoloji", code: "RAD" },
     { name: "Üroloji", code: "URO" },
   ];
+  const cities = [
+    { name: "İstanbul", code: "IST" },
+    { name: "Tekirdağ", code: "TKR" },
+    { name: "Ankara", code: "ANK" },
+    { name: "İzmir", code: "IZ" },
+  ];
 
   const handleChange = (e, field) => {
     setFormData({
@@ -65,6 +71,17 @@ export default function Register() {
             options={specialties}
             optionLabel="name"
             placeholder="Uzmanlık alanı seçin"
+            className={styles.input}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Şehir</label>
+          <Dropdown
+            value={formData.specialty}
+            onChange={(e) => handleChange(e, "specialty")}
+            options={cities}
+            optionLabel="name"
+            placeholder="Şehir seçin"
             className={styles.input}
           />
         </div>
