@@ -4,6 +4,7 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import styles from "./Register.module.css";
+import axios from "axios";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ export default function Register() {
     email: "",
     password: "",
     specialty: null,
+    cities: null,
   });
 
   const specialties = [
@@ -51,10 +53,47 @@ export default function Register() {
   ];
 
   const handleChange = (e, field) => {
-    setFormData({
-      ...formData,
-      [field]: e.target.value,
-    });
+    if (field === "specialty" || field === "cities") {
+      setFormData({
+        ...formData,
+        [field]: e.value,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [field]: e.target.value,
+      });
+    }
+  };
+
+  const handleSignUp = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/register",
+        {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+          specialty: formData.specialty.code,
+          city: formData.cities.code,
+        }
+      );
+
+      if (response.status === 201) {
+        console.log("Kayıt başarılı:", response.data);
+        // Başarılı kayıt sonrası yönlendirme yapılabilir
+        router.push("/login");
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Sunucu hatası:", error.response.data);
+      } else if (error.request) {
+        console.error("Sunucuya ulaşılamadı");
+      } else {
+        console.error("Hata:", error.message);
+      }
+    }
   };
 
   return (
@@ -72,17 +111,19 @@ export default function Register() {
             optionLabel="name"
             placeholder="Uzmanlık alanı seçin"
             className={styles.input}
+            required
           />
         </div>
         <div className={styles.formGroup}>
           <label>Şehir</label>
           <Dropdown
-            value={formData.specialty}
-            onChange={(e) => handleChange(e, "specialty")}
+            value={formData.cities}
+            onChange={(e) => handleChange(e, "cities")}
             options={cities}
             optionLabel="name"
             placeholder="Şehir seçin"
             className={styles.input}
+            required
           />
         </div>
         <div className={styles.nameContainer}>
@@ -92,6 +133,7 @@ export default function Register() {
               value={formData.firstName}
               onChange={(e) => handleChange(e, "firstName")}
               className={styles.input}
+              required
             />
           </div>
           <div className={styles.nameField}>
@@ -100,6 +142,7 @@ export default function Register() {
               value={formData.lastName}
               onChange={(e) => handleChange(e, "lastName")}
               className={styles.input}
+              required
             />
           </div>
         </div>
@@ -109,6 +152,7 @@ export default function Register() {
             value={formData.email}
             onChange={(e) => handleChange(e, "email")}
             className={styles.input}
+            required
           />
         </div>
         <div className={styles.formGroup}>
@@ -118,9 +162,12 @@ export default function Register() {
             value={formData.password}
             onChange={(e) => handleChange(e, "password")}
             className={styles.input}
+            required
           />
         </div>
-        <Button className={styles.loginButton}>Kayıt Ol</Button>
+        <Button onClick={handleSignUp} className={styles.loginButton}>
+          Kayıt Ol
+        </Button>
       </div>
     </div>
   );
