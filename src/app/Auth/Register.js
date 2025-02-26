@@ -1,59 +1,62 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import styles from "./Register.module.css";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    companyName: "",
     email: "",
     password: "",
-    specialty: null,
-    cities: null,
+    branchId: null,
+    cityId: null,
   });
 
-  const specialties = [
-    { name: "Acil Tıp", code: "ACL" },
-    { name: "Adli Tıp", code: "ADL" },
-    { name: "Ağız Diş Ve Çene Cerrahisi", code: "ADC" },
-    { name: "Aile Hekimliği", code: "AH" },
-    { name: "Anesteziyoloji Ve Reanimasyon", code: "ANS" },
-    { name: "Beyin Ve Sinir Cerrahisi", code: "BSC" },
-    { name: "Çocuk Sağlığı Ve Hastalıkları", code: "CSH" },
-    { name: "Dermatoloji", code: "DER" },
-    { name: "Endokrinoloji Ve Metabolizma", code: "END" },
-    { name: "Enfeksiyon Hastalıkları", code: "ENF" },
-    { name: "Fiziksel Tıp Ve Rehabilitasyon", code: "FTR" },
-    { name: "Gastroenteroloji", code: "GAS" },
-    { name: "Genel Cerrahi", code: "GC" },
-    { name: "Göğüs Hastalıkları", code: "GH" },
-    { name: "Göz Hastalıkları", code: "GOZ" },
-    { name: "İç Hastalıkları", code: "IC" },
-    { name: "Kadın Hastalıkları Ve Doğum", code: "KHD" },
-    { name: "Kalp Ve Damar Cerrahisi", code: "KDC" },
-    { name: "Kardiyoloji", code: "KAR" },
-    { name: "Kulak Burun Boğaz", code: "KBB" },
-    { name: "Nefroloji", code: "NEF" },
-    { name: "Nöroloji", code: "NOR" },
-    { name: "Ortopedi Ve Travmatoloji", code: "ORT" },
-    { name: "Plastik Rekonstrüktif Ve Estetik Cerrahi", code: "PLS" },
-    { name: "Psikiyatri", code: "PSK" },
-    { name: "Radyoloji", code: "RAD" },
-    { name: "Üroloji", code: "URO" },
-  ];
-  const cities = [
-    { name: "İstanbul", code: "IST" },
-    { name: "Tekirdağ", code: "TKR" },
-    { name: "Ankara", code: "ANK" },
-    { name: "İzmir", code: "IZ" },
-  ];
+  const [branches, setBranches] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  const getBranches = async () => {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:8080/api/v1/branch/getAll"
+      );
+      const formattedBranches = data.data.map((branch) => ({
+        name: branch.name,
+        id: branch.id,
+      }));
+      setBranches(formattedBranches);
+    } catch (error) {
+      console.error("Branch verileri çekilemedi:", error);
+    }
+  };
+
+  const getCities = async () => {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:8080/api/v1/city/getAll"
+      );
+      const formattedCities = data.data.map((city) => ({
+        name: city.name,
+        id: city.id,
+      }));
+      setCities(formattedCities);
+    } catch (error) {
+      console.error("City verileri çekilemedi:", error);
+    }
+  };
+
+  useEffect(() => {
+    getCities();
+    getBranches();
+  }, []);
 
   const handleChange = (e, field) => {
-    if (field === "specialty" || field === "cities") {
+    if (field === "branchId" || field === "cityId") {
       setFormData({
         ...formData,
         [field]: e.value,
@@ -66,23 +69,23 @@ export default function Register() {
     }
   };
 
-  const handleSignUp = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/register",
+        "http://localhost:8080/api/v1/auth/register",
         {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
+          companyName: formData.companyName,
           email: formData.email,
           password: formData.password,
-          specialty: formData.specialty.code,
-          city: formData.cities.code,
+          branchId: formData.branchId.id,
+          cityId: formData.cityId.id,
         }
       );
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         console.log("Kayıt başarılı:", response.data);
-        // Başarılı kayıt sonrası yönlendirme yapılabilir
         router.push("/login");
       }
     } catch (error) {
@@ -102,72 +105,72 @@ export default function Register() {
         <div className={styles.formHeader}>
           <h1>SIGN UP</h1>
         </div>
-        <div className={styles.formGroup}>
-          <label>Uzmanlık Alanı</label>
-          <Dropdown
-            value={formData.specialty}
-            onChange={(e) => handleChange(e, "specialty")}
-            options={specialties}
-            optionLabel="name"
-            placeholder="Uzmanlık alanı seçin"
-            className={styles.input}
-            required
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label>Şehir</label>
-          <Dropdown
-            value={formData.cities}
-            onChange={(e) => handleChange(e, "cities")}
-            options={cities}
-            optionLabel="name"
-            placeholder="Şehir seçin"
-            className={styles.input}
-            required
-          />
-        </div>
-        <div className={styles.nameContainer}>
-          <div className={styles.nameField}>
-            <label>Ad</label>
-            <InputText
-              value={formData.firstName}
-              onChange={(e) => handleChange(e, "firstName")}
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label htmlFor="branchId">Uzmanlık Alanı</label>
+            <Dropdown
+              id="branchId"
+              value={formData.branchId}
+              onChange={(e) => handleChange(e, "branchId")}
+              options={branches}
+              optionLabel="name"
+              placeholder="Uzmanlık alanı seçin"
+              editable
               className={styles.input}
               required
             />
           </div>
-          <div className={styles.nameField}>
-            <label>Soyad</label>
-            <InputText
-              value={formData.lastName}
-              onChange={(e) => handleChange(e, "lastName")}
+          <div className={styles.formGroup}>
+            <label htmlFor="cityId">Şehir</label>
+            <Dropdown
+              id="cityId"
+              value={formData.cityId}
+              onChange={(e) => handleChange(e, "cityId")}
+              options={cities}
+              optionLabel="name"
+              placeholder="Şehir seçin"
+              editable
               className={styles.input}
               required
             />
           </div>
-        </div>
-        <div className={styles.formGroup}>
-          <label>E-posta</label>
-          <InputText
-            value={formData.email}
-            onChange={(e) => handleChange(e, "email")}
-            className={styles.input}
-            required
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label>Şifre</label>
-          <InputText
-            type="password"
-            value={formData.password}
-            onChange={(e) => handleChange(e, "password")}
-            className={styles.input}
-            required
-          />
-        </div>
-        <Button onClick={handleSignUp} className={styles.loginButton}>
-          Kayıt Ol
-        </Button>
+          <div className={styles.formGroup}>
+            <label htmlFor="companyName">Ad Soyad ya da Şirket Adı</label>
+            <InputText
+              id="companyName"
+              value={formData.companyName}
+              onChange={(e) => handleChange(e, "companyName")}
+              className={styles.input}
+              required
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="email">E-posta</label>
+            <InputText
+              id="email"
+              type="email"
+              value={formData.email}
+              onChange={(e) => handleChange(e, "email")}
+              className={styles.input}
+              required
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="password">Şifre</label>
+            <InputText
+              id="password"
+              type="password"
+              value={formData.password}
+              onChange={(e) => handleChange(e, "password")}
+              className={styles.input}
+              required
+              minLength={6}
+            />
+          </div>
+          <Button type="submit" className={styles.loginButton}>
+            Kayıt Ol
+          </Button>
+        </form>
       </div>
     </div>
   );
