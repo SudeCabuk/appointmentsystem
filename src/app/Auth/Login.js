@@ -19,7 +19,6 @@ export default function Login() {
       [field]: e.target.value,
     });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -33,8 +32,7 @@ export default function Login() {
       );
 
       if (response.status === 200) {
-        console.log("Giriş başarılı:", response.data);
-        localStorage.setItem("token", response.data.token);
+        console.log("Kayıt başarılı:", response.data);
         router.push("/admin");
       }
     } catch (error) {
@@ -52,36 +50,29 @@ export default function Login() {
     <div className={styles.container}>
       <div className={styles.card}>
         <div className={styles.formHeader}>
-          <h1>LOGIN</h1>
+          <h1>LOGİN</h1>
         </div>
-        <form onSubmit={handleSubmit}>
-          <div className={styles.formGroup}>
-            <label htmlFor="email">E-posta</label>
-            <InputText
-              id="email"
-              type="email"
-              value={formData.email}
-              onChange={(e) => handleChange(e, "email")}
-              className={styles.input}
-              required
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label htmlFor="password">Şifre</label>
-            <InputText
-              id="password"
-              type="password"
-              value={formData.password}
-              onChange={(e) => handleChange(e, "password")}
-              className={styles.input}
-              required
-              minLength={6}
-            />
-          </div>
-          <Button type="submit" className={styles.loginButton}>
-            Giriş Yap
-          </Button>
-        </form>
+        <form onSubmit={handleSubmit}></form>
+        <div className={styles.formGroup}>
+          <label>E-posta</label>
+          <InputText
+            value={formData.email}
+            onChange={(e) => handleChange(e, "email")}
+            className={styles.input}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Şifre</label>
+          <InputText
+            type="password"
+            value={formData.password}
+            onChange={(e) => handleChange(e, "password")}
+            className={styles.input}
+          />
+        </div>
+        <Button type="submit" className={styles.loginButton}>
+          Giriş Yap
+        </Button>
       </div>
     </div>
   );

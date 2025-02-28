@@ -1,7 +1,6 @@
 import { PrimeReactProvider } from "primereact/api";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "primereact/resources/primereact.min.css";
-
 import "./globals.css";
 
 export default function RootLayout({ children }) {
