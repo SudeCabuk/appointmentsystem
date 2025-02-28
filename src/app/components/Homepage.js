@@ -42,6 +42,19 @@ export default function Homepage() {
   );
   const [branches, setBranches] = useState([]);
   const [cities, setCities] = useState([]);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+
+  const end = (
+    <div className={styles.menuToggle}>
+      <Button
+        icon="pi pi-bars"
+        onClick={() => setIsMenuVisible(!isMenuVisible)}
+        className={styles.menuButton}
+        aria-label="Menu"
+      />
+    </div>
+  );
+
   const getBranches = async () => {
     try {
       const { data } = await axios.get(
@@ -93,7 +106,14 @@ export default function Homepage() {
 
   return (
     <div className="card">
-      <Menubar model={items} start={start} className={styles.menubar} />
+      <Menubar
+        model={items}
+        start={start}
+        end={end}
+        className={`${styles.menubar} ${
+          isMenuVisible ? styles.menuVisible : ""
+        }`}
+      />
       <div className={styles.container}>
         <div className={styles.leftSection}>
           <h1>Doktor randevusu al</h1>
@@ -142,8 +162,8 @@ export default function Homepage() {
           <Image
             src="/doctors.png"
             alt="Doctors"
-            width={800}
-            height={300}
+            width={650}
+            height={400}
             priority
           />
         </div>
