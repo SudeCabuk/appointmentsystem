@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import AuthServices from "@/Services/AuthServices";
 import BranchServices from "@/Services/BranchServices";
 import CityServices from "@/Services/CityServices";
+import Link from "next/link";
 
 export default function Register() {
   let authService = new AuthServices;
@@ -144,6 +145,9 @@ export default function Register() {
           <Button type="submit" className={styles.loginButton}>
             Kayıt Ol
           </Button>
+          <div className={styles.loginRegisterRouteTextContainer}>
+            <Link className={styles.loginRegisterRouteText} href="/login" >Hesabın var mı? Giriş Yap</Link>
+          </div>
         </form>
       </div>
     </div>

@@ -82,3 +82,12 @@
         font-size: 1rem !important;
     }
 }
+
+.loginRegisterRouteText {
+    color: #1557b0;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.loginRegisterRouteTextContainer{
+    margin-top: 10px;
+}

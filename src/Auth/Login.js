@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import AuthServices from "@/Services/AuthServices";
 import Cookies from "js-cookie";
+import Link from "next/link";
 
 export default function Login() {
   const router = useRouter();
@@ -61,6 +62,9 @@ export default function Login() {
         <Button type="submit" className={styles.loginButton}>
           Giriş Yap
         </Button>
+        <div className={styles.loginRegisterRouteTextContainer}>
+          <Link className={styles.loginRegisterRouteText} href="/register" >Hesabın yok mu? Kayıt Ol</Link>
+        </div>
         </form>
       </div>
     </div>

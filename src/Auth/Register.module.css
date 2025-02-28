@@ -107,4 +107,13 @@
     background-color: #1557b0 !important;
 }
 
+.loginRegisterRouteText {
+    color: #1557b0;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.loginRegisterRouteTextContainer{
+    margin-top: 10px;
+}
+
 
