@@ -5,9 +5,12 @@ import { Button } from "primereact/button";
 import styles from "./Login.module.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import AuthServices from "@/Services/AuthServices";
+import Cookies from "js-cookie";
 
 export default function Login() {
   const router = useRouter();
+  const authService = new AuthServices;
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -19,31 +22,16 @@ export default function Login() {
       [field]: e.target.value,
     });
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/auth/login",
-        {
-          email: formData.email,
-          password: formData.password,
-        }
-      );
-
-      if (response.status === 200) {
-        console.log("Kayıt başarılı:", response.data);
-        router.push("/admin");
-      }
-    } catch (error) {
-      if (error.response) {
-        console.error("Sunucu hatası:", error.response.data);
-      } else if (error.request) {
-        console.error("Sunucuya ulaşılamadı");
-      } else {
-        console.error("Hata:", error.message);
-      }
-    }
+    authService.login(formData).then((response) => {
+      localStorage.setItem("user",JSON.stringify(response.data))
+      Cookies.set("user", JSON.stringify(response.data), { expires: 1, path: "/" });
+      router.push("/admin");
+    }).catch((err) => {
+      console.log("errrrrr",err)
+      console.log(err.response.data.message)
+    })
   };
 
   return (
@@ -52,7 +40,7 @@ export default function Login() {
         <div className={styles.formHeader}>
           <h1>LOGİN</h1>
         </div>
-        <form onSubmit={handleSubmit}></form>
+        <form onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
           <label>E-posta</label>
           <InputText
@@ -73,6 +61,7 @@ export default function Login() {
         <Button type="submit" className={styles.loginButton}>
           Giriş Yap
         </Button>
+        </form>
       </div>
     </div>
   );

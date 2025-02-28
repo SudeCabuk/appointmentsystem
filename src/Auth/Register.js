@@ -4,10 +4,15 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import styles from "./Register.module.css";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import AuthServices from "@/Services/AuthServices";
+import BranchServices from "@/Services/BranchServices";
+import CityServices from "@/Services/CityServices";
 
 export default function Register() {
+  let authService = new AuthServices;
+  let branchService = new BranchServices;
+  let cityService = new CityServices;
   const router = useRouter();
   const [formData, setFormData] = useState({
     companyName: "",
@@ -20,34 +25,16 @@ export default function Register() {
   const [branches, setBranches] = useState([]);
   const [cities, setCities] = useState([]);
 
-  const getBranches = async () => {
-    try {
-      const { data } = await axios.get(
-        "http://localhost:8080/api/v1/branch/getAll"
-      );
-      const formattedBranches = data.data.map((branch) => ({
-        name: branch.name,
-        id: branch.id,
-      }));
-      setBranches(formattedBranches);
-    } catch (error) {
-      console.error("Branch verileri çekilemedi:", error);
-    }
+  const getBranches = () => {
+    branchService.getAll().then((response) => {
+      setBranches(response.data.data)
+    })
   };
 
   const getCities = async () => {
-    try {
-      const { data } = await axios.get(
-        "http://localhost:8080/api/v1/city/getAll"
-      );
-      const formattedCities = data.data.map((city) => ({
-        name: city.name,
-        id: city.id,
-      }));
-      setCities(formattedCities);
-    } catch (error) {
-      console.error("City verileri çekilemedi:", error);
-    }
+    cityService.getAll().then((response) => {
+      setCities(response.data.data)
+    })
   };
 
   useEffect(() => {
@@ -69,34 +56,21 @@ export default function Register() {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/auth/register",
-        {
-          companyName: formData.companyName,
-          email: formData.email,
-          password: formData.password,
-          branchId: formData.branchId.id,
-          cityId: formData.cityId.id,
-        }
-      );
-
-      if (response.status === 200) {
-        console.log("Kayıt başarılı:", response.data);
-        router.push("/login");
-      }
-    } catch (error) {
-      if (error.response) {
-        console.error("Sunucu hatası:", error.response.data);
-      } else if (error.request) {
-        console.error("Sunucuya ulaşılamadı");
-      } else {
-        console.error("Hata:", error.message);
-      }
-    }
+    let data = {
+      companyName: formData.companyName,
+      email: formData.email,
+      password: formData.password,
+      branchId: formData.branchId.id,
+      cityId: formData.cityId.id,
+    };
+    authService.register(data).then((response) => {
+      console.log("Kayıt başarılı:", response.data);
+      router.push("/login");
+    }).catch((err) => {
+      console.log(err.response.data.message)
+    })
   };
 
   return (
