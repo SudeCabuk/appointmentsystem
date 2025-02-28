@@ -11,34 +11,31 @@
 }
 
 .card {
-    margin: 0 !important;
+    margin: auto !important;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
    
 }
 
 .menubar {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
     padding: 0 7rem;
     background: white;
+
 }
 
 .menubar ul {
-    margin-left: auto !important;
-    display: flex;
-    justify-content: flex-end;
+    margin-left: 38rem !important;
+   
 }
 
 .menubar :global(.p-menuitem-link) {
-    padding: 0.75rem 1rem !important;
+    padding-right: 1rem;
     color: #333 !important;
     font-size: 1rem;
 }
 
 .menubar :global(.p-menuitem-link:hover) {
     background-color: #f8f9fa !important;
-    border-radius: 4px;
+    border-radius: 1px;
 }
 
 .container {
@@ -48,7 +45,6 @@
     background-color: #82b5f8;
     color: white;
     display: flex;
-    justify-content: space-between;
     align-items: center;
 }
 
@@ -70,14 +66,12 @@
 }
 
 .form {
-    width: 100%;
     max-width: 400px;
 }
 
 .formGroup {
     display: flex;
     flex-direction: column;
-    width: 100%;
     margin-bottom: 1.5rem;
 }
 
@@ -93,7 +87,6 @@
 
 
 .input:global(.p-dropdown) {
-    width: 100% !important;
     background: white;
     border-radius: 2px;
     font-size: 1rem !important;
