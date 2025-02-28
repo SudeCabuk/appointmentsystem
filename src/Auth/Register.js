@@ -10,9 +10,9 @@ import BranchServices from "@/Services/BranchServices";
 import CityServices from "@/Services/CityServices";
 
 export default function Register() {
-  let authService = new AuthServices;
-  let branchService = new BranchServices;
-  let cityService = new CityServices;
+  let authService = new AuthServices();
+  let branchService = new BranchServices();
+  let cityService = new CityServices();
   const router = useRouter();
   const [formData, setFormData] = useState({
     companyName: "",
@@ -27,14 +27,14 @@ export default function Register() {
 
   const getBranches = () => {
     branchService.getAll().then((response) => {
-      setBranches(response.data.data)
-    })
+      setBranches(response.data.data);
+    });
   };
 
   const getCities = async () => {
     cityService.getAll().then((response) => {
-      setCities(response.data.data)
-    })
+      setCities(response.data.data);
+    });
   };
 
   useEffect(() => {
@@ -65,12 +65,15 @@ export default function Register() {
       branchId: formData.branchId.id,
       cityId: formData.cityId.id,
     };
-    authService.register(data).then((response) => {
-      console.log("Kayıt başarılı:", response.data);
-      router.push("/login");
-    }).catch((err) => {
-      console.log(err.response.data.message)
-    })
+    authService
+      .register(data)
+      .then((response) => {
+        console.log("Kayıt başarılı:", response.data);
+        router.push("/login");
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+      });
   };
 
   return (

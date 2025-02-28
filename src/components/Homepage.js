@@ -5,11 +5,14 @@ import Image from "next/image";
 import styles from "./Homepage.module.css";
 import { useRouter } from "next/navigation";
 import { Dropdown } from "primereact/dropdown";
-import axios from "axios";
 import { Button } from "primereact/button";
 import "primeicons/primeicons.css";
+import BranchServices from "@/Services/BranchServices";
+import CityServices from "@/Services/CityServices";
 
 export default function Homepage() {
+  let branchService = new BranchServices();
+  let cityService = new CityServices();
   const router = useRouter();
   const [formData, setFormData] = useState({
     branchId: null,
@@ -55,34 +58,16 @@ export default function Homepage() {
     </div>
   );
 
-  const getBranches = async () => {
-    try {
-      const { data } = await axios.get(
-        "http://localhost:8080/api/v1/branch/getAll"
-      );
-      const formattedBranches = data.data.map((branch) => ({
-        name: branch.name,
-        id: branch.id,
-      }));
-      setBranches(formattedBranches);
-    } catch (error) {
-      console.error("Branch verileri çekilemedi:", error);
-    }
+  const getBranches = () => {
+    branchService.getAll().then((response) => {
+      setBranches(response.data.data);
+    });
   };
 
   const getCities = async () => {
-    try {
-      const { data } = await axios.get(
-        "http://localhost:8080/api/v1/city/getAll"
-      );
-      const formattedCities = data.data.map((city) => ({
-        name: city.name,
-        id: city.id,
-      }));
-      setCities(formattedCities);
-    } catch (error) {
-      console.error("City verileri çekilemedi:", error);
-    }
+    cityService.getAll().then((response) => {
+      setCities(response.data.data);
+    });
   };
 
   useEffect(() => {
