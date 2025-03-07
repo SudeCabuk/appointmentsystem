@@ -134,12 +134,13 @@ export default function Homepage() {
 
             <Button
               icon="pi pi-search"
+              iconPos="left"
               rounded
               severity="success"
               aria-label="Search"
               className={styles.btn}
             >
-              Ara
+              <span className={styles.btntext}>Ara</span>
             </Button>
           </form>
         </div>
@@ -151,6 +152,52 @@ export default function Homepage() {
             height={400}
             priority
           />
+        </div>
+      </div>
+      <div className={styles.featureSection}>
+        <div className={styles.feature}>
+          <i className="pi pi-search"></i>
+          <h3>Doktor veya uzman bulun</h3>
+          <p>181 000'den fazla doktor ve uzman arasından seçim yapın. Diğer hastaların görüşlerini inceleyin.</p>
+        </div>
+        <div className={styles.feature}>
+          <i className="pi pi-calendar"></i>
+          <h3>Kolaylıkla randevu alın</h3>
+          <p>Size uygun tarih ve saati seçin, bilgilerinizi girin ve onaylayın. Psikolog veya Diyetisyenlerle online görüşün.</p>
+        </div>
+        <div className={styles.feature}>
+          <i className="pi pi-bell"></i>
+          <h3>Randevuları unutmayın</h3>
+          <p>Randevularınızı otomatik sms ve e-mail ile hatırlatıyoruz.</p>
+        </div>
+        <div className={styles.feature}>
+          <i className="pi pi-thumbs-up"></i>
+          <h3>Randevu oluşturmak ücretsizdir</h3>
+          <p>Doktortakvimi'nde randevu oluşturmak tamamen ücretsizdir. (Muayene ücretlerini öğrenmek için doktorunuza başvurun)</p>
+        </div>
+      </div>
+      <div className={styles.reviewsSection}>
+        <h2>En yeni değerlendirmeler</h2>
+        <div className={styles.review}>
+          <img src="/path/to/user1.jpg" alt="Mehmet Güzeloglu" />
+          <div>
+            <h3>Mehmet Güzeloglu</h3>
+            <p>Bacağımda ağrı, sızı şikayeti ile geldim. Hemen teşhis edip operasyon yaptılar...</p>
+          </div>
+        </div>
+        <div className={styles.review}>
+          <img src="/path/to/user2.jpg" alt="Taha Takmaz" />
+          <div>
+            <h3>Taha Takmaz</h3>
+            <p>Kasıklardaki yoğun ağrı nedeniyle araştırmalarım sonucunda Taha Bey'e ulaştım...</p>
+          </div>
+        </div>
+        <div className={styles.review}>
+          <img src="/path/to/user3.jpg" alt="Ömer Bulut" />
+          <div>
+            <h3>Ömer Bulut</h3>
+            <p>Slm benim dogumsal dudak yarigi(tek taraf) oldugu icin her zaman hayalimdi...</p>
+          </div>
         </div>
       </div>
     </div>
