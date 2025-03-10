@@ -1,0 +1,114 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+.logo {
+    text-align: center;
+}
+
+
+.header {
+    text-align: center;
+    margin: 3rem 0;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.section {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    margin: 4rem 0;
+    padding: 2rem;
+}
+
+.leftContent, .rightContent {
+    flex: 1;
+}
+
+.checkList {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.checkItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.checkItem i {
+    color: #00bfa5;
+    font-size: 1.5rem;
+    margin-top: 0.2rem;
+}
+
+.checkItem p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+.rightContent h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.rightContent p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.infoList {
+    margin-top: 2rem;
+}
+
+.infoList p {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.infoList p:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #00bfa5;
+}
+
+.note {
+    font-size: 0.9rem !important;
+    color: #666 !important;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .section {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .rightContent h2 {
+        font-size: 1.8rem;
+    }
+
+    .checkItem p, 
+    .rightContent p {
+        font-size: 1rem;
+    }
+} 
